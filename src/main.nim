@@ -19,6 +19,9 @@ when isMainModule:
 
   while not windowShouldClose():
 
+    if isKeyPressed(KeyboardKey.F):
+      toggleFullscreen()
+
     update(getFrameTime())
 
     beginTextureMode(target)
@@ -35,7 +38,7 @@ when isMainModule:
     let destRect: Rectangle = (destY, destX, renderWidth.toFloat * scale, renderHeight.toFloat * scale)
     drawTexturePro(target.texture, sourceRect, destRect, (0.0, 0.0), 0.0, Raywhite)
 
-    if debug:
+    when debug:
       drawFPS(20, 20)
     
     drawGUI()
