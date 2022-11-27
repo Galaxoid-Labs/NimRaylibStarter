@@ -1,15 +1,14 @@
 import nimraylib_now
 import configs
+import utils
 import extras
-import game
+import ../game
 
 # IMPORTANT
 # You should'nt have to change anything here for the most part
 # Write you game logic in game.nim
 
 var needsFullscreenToggle = false
-proc getDisplayWidth(): int
-proc getDisplayHeight(): int
 proc tryToggleFullscreen(): void
 
 when isMainModule:
@@ -28,7 +27,7 @@ when isMainModule:
 
   while not windowShouldClose():
 
-    if isKeyPressed(KeyboardKey.F):
+    if isKeyPressed(FullscreenToggleKey):
       tryToggleFullscreen()
       
     if needsFullscreenToggle:
@@ -66,18 +65,6 @@ when isMainModule:
     endDrawing()
 
   closeWindow()
-
-proc getDisplayWidth(): int =
-  if isWindowFullscreen():
-    getMonitorWidth(getCurrentMonitor())
-  else:
-    getScreenWidth()
-
-proc getDisplayHeight(): int =
-  if isWindowFullscreen():
-    getMonitorHeight(getCurrentMonitor())
-  else:
-    getScreenHeight()
 
 proc tryToggleFullscreen(): void =
   if not isWindowFullscreen():

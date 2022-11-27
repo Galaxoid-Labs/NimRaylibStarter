@@ -15,3 +15,4 @@ const
   Title* = "Raylib Nim Starter"
   LetterBoxColor* = Black
   ClearScreenColor* = (16, 16, 16, 255)
+  FullscreenToggleKey* = KeyboardKey.F

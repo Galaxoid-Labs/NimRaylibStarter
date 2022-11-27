@@ -5,7 +5,7 @@ author        = "Jacob Davis"
 description   = "Simple Starter Template for Raylib"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["main=game"]
+bin           = @["lib/main=game"]
 
 
 # Dependencies

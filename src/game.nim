@@ -1,6 +1,6 @@
 import nimraylib_now
-import configs
-import extras
+import lib/configs
+import lib/extras
 
 # Do game initialization here
 proc start*(): void = discard
@@ -13,5 +13,6 @@ proc draw*(): void =
   clearBackground(ClearScreenColor)
 
 # Important to understand this drawing
-# doesnt scale with the render target size. It draws at the normal windowWidth/windowHeight
+# doesnt scale with the render target size.
+# It draws at the normal WindowWidth/WindowHeight
 proc drawUnscaled*(): void = discard
