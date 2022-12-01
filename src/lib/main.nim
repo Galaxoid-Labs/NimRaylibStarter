@@ -9,7 +9,14 @@ import ../game
 # Write you game logic in game.nim
 
 var needsFullscreenToggle = false
-proc tryToggleFullscreen(): void
+proc tryToggleFullscreen(): void =
+  if not isWindowFullscreen():
+    setWindowSize(getDisplayWidth(), getDisplayHeight())
+    needsFullscreenToggle = true
+  else:
+    needsFullscreenToggle = false
+    toggleFullscreen()
+    setWindowSize(InitialWindowWidth, InitialWindowHeight)
 
 when isMainModule:
 
@@ -65,12 +72,3 @@ when isMainModule:
     endDrawing()
 
   closeWindow()
-
-proc tryToggleFullscreen(): void =
-  if not isWindowFullscreen():
-    setWindowSize(getDisplayWidth(), getDisplayHeight())
-    needsFullscreenToggle = true
-  else:
-    needsFullscreenToggle = false
-    toggleFullscreen()
-    setWindowSize(InitialWindowWidth, InitialWindowHeight)

@@ -20,15 +20,70 @@ const
   PicoPeach*: Color = (255, 204, 170, 255)
   PicoBlack*: Color = (16, 16, 16, 255)
 
-const picoColors = [PicoDarkBlue, PicoDarkPurple, PicoDarkGreen, PicoDarkBrown, PicoDarkGray, PicoLightGray,
-  PicoWhite, PicoRed, PicoOrange, PicoYellow, PicoGreen, PicoBlue, PicoLavender, PicoPink, PicoPeach, PicoBlack
+const picoColors = [PicoDarkBlue, PicoDarkPurple, PicoDarkGreen, PicoDarkBrown, 
+                    PicoDarkGray, PicoLightGray, PicoWhite, PicoRed, PicoOrange, 
+                    PicoYellow, PicoGreen, PicoBlue, PicoLavender, PicoPink, PicoPeach, PicoBlack
 ]
+
+type
+  PixelObject* = object
+    pixels*: seq[seq[Color]]
+    pixelSize*: int
+    pos*: Vector2
+    origin*: Vector2
+
+proc draw*(self: PixelObject): void =
+  for i in countup(0, self.pixels.len-1, 1):
+    for j in countup(0, self.pixels[0].len-1, 1):
+      let ox = (float)(self.pixels[0].len * self.pixelSize) * self.origin.x
+      let x = (self.pos.x - ox) + (float)(j * self.pixelSize)
+      let oy = (float)(self.pixels.len * self.pixelSize) * self.origin.y
+      let y = (self.pos.y - oy) + (float)(i * self.pixelSize)
+      let color = self.pixels[i][j]
+      drawRectangle((cint)x, (cint)y, self.pixelSize, self.pixelSize, color)
 
 proc initExtras*(): void =
   randomize()
 
-proc randomPicoColor*(): Color =
+proc getRandomPicoColor*(): Color =
+  ## Returns a random color from the Pico Pallete
   picoColors[rand(0 .. 15)]
 
-proc randomPositionInRenderBounds*(): Vector2 =
+proc getRandomVectorInRenderBounds*(): Vector2 =
+  ## Returns a random Vector2 within bounds of the scaled
+  ## rendering rect
   (rand(0.0 .. (float)RenderWidth), rand(0.0 .. (float)RenderHeight))
+
+proc getTextureForSeq*(colorSeq: seq[seq[Color]], pixelSize: int): Texture2D =
+  ## Takes a 2d seq of Color and returns a Texture2d
+  ## pixelSize determines the size of each color in the seq
+  var image: Image = genImageColor(colorSeq[0].len * pixelSize, colorSeq.len * pixelSize, Blank)
+  var imagePtr = image.addr
+
+  for i in countup(0, colorSeq.len-1, 1):
+    for j in countup(0, colorSeq[0].len-1, 1):
+      let x = j * pixelSize
+      let y = i * pixelSize
+      let color = colorSeq[i][j]
+      imageDrawRectangle(imagePtr, x, y, pixelSize, pixelSize, color)
+
+  let texture = loadTextureFromImage(image)
+  unloadImage(image)
+  texture
+
+proc getTextureForSeq*(intSeq: seq[seq[int]], pixelSize: int): Texture2D =
+  ## Takes a 2d seq of int (0 or 1) and returns a White Texture2d
+  ## pixelSize determines the size of each color in the seq
+  var image: Image = genImageColor(intSeq[0].len * pixelSize, intSeq.len * pixelSize, Blank)
+  var imagePtr = image.addr
+
+  for i in countup(0, intSeq.len-1, 1):
+    for j in countup(0, intSeq[0].len-1, 1):
+      let x = j * pixelSize
+      let y = i * pixelSize
+      let color = (if intSeq[i][j] == 0: Blank else: White)
+      imageDrawRectangle(imagePtr, x, y, pixelSize, pixelSize, color)
+
+  let texture = loadTextureFromImage(image)
+  unloadImage(image)
+  texture

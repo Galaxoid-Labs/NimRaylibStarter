@@ -16,3 +16,9 @@ const
   LetterBoxColor* = Black
   ClearScreenColor* = (16, 16, 16, 255)
   FullscreenToggleKey* = KeyboardKey.F
+  
+proc getHalfRenderWidth*(): float =
+  RenderWidth / 2
+
+proc getHalfRenderHeight*(): float =
+  RenderHeight / 2

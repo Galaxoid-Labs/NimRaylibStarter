@@ -2,14 +2,14 @@ import nimraylib_now
 
 # Get the unscaled display width
 proc getDisplayWidth*(): int =
+  var width = getScreenWidth()
   if isWindowFullscreen():
-    getMonitorWidth(getCurrentMonitor())
-  else:
-    getScreenWidth()
+    width = getMonitorWidth(getCurrentMonitor())
+  return width * (int)getWindowScaleDPI().x
 
 # Get the unscaled display height
 proc getDisplayHeight*(): int =
+  var height = getScreenHeight()
   if isWindowFullscreen():
-    getMonitorHeight(getCurrentMonitor())
-  else:
-    getScreenHeight()
+    height = getMonitorHeight(getCurrentMonitor())
+  return height * (int)getWindowScaleDPI().y
