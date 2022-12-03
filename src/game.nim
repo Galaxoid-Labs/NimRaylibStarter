@@ -3,7 +3,7 @@ import lib/configs
 import lib/extras
 
 var tex: Texture2D
-var welcome: cstring = "Hi! Welcome to the rextras!"
+var welcome: cstring = "Hi! Welcome to the nim raylib starter!"
 
 proc start*(): void = 
   ## Do game initialization here
