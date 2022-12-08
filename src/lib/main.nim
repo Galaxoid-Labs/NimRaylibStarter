@@ -40,11 +40,18 @@ when isMainModule:
     if needsFullscreenToggle:
       toggleFullscreen()
       needsFullscreenToggle = false
+    
+    var dw: int = getDisplayWidth(false)
+    var dh: int = getDisplayHeight(false)
 
-    let scale: float = min(getDisplayWidth() / RenderWidth, getDisplayHeight() / RenderHeight)
+    if isWindowFullscreen():
+      dw = getDisplayWidth()
+      dh = getDisplayHeight()
 
-    let mouseOffsetX: int = -(int)((getDisplayWidth() - (int)(RenderWidth * scale)) / 2)
-    let mouseOffsetY: int = -(int)((getDisplayHeight() - (int)(RenderHeight * scale)) / 2)
+    let scale: float = min(dw / RenderWidth, dh / RenderHeight)
+
+    let mouseOffsetX: int = -(int)((dw - (int)(RenderWidth * scale)) / 2)
+    let mouseOffsetY: int = -(int)((dh - (int)(RenderHeight * scale)) / 2)
     setMouseOffset(mouseOffsetX, mouseOffsetY)
     setMouseScale(1/scale, 1/scale)
 
@@ -58,8 +65,8 @@ when isMainModule:
     clearBackground(LetterBoxColor)
 
     let sourceRect: Rectangle = (0.0, 0.0, target.texture.width.toFloat, -target.texture.height.toFloat)
-    let destY: float = (getDisplayWidth().toFloat - (RenderWidth.toFloat * scale)) * 0.5
-    let destX: float = (getDisplayHeight().toFloat - (RenderHeight.toFloat * scale)) * 0.5
+    let destY: float = (dw.toFloat - (RenderWidth.toFloat * scale)) * 0.5
+    let destX: float = (dh.toFloat - (RenderHeight.toFloat * scale)) * 0.5
     let destRect: Rectangle = (destY, destX, RenderWidth.toFloat * scale, RenderHeight.toFloat * scale)
     drawTexturePro(target.texture, sourceRect, destRect, (0.0, 0.0), 0.0, Raywhite)
 
